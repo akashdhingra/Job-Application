@@ -1,9 +1,7 @@
 package com.example.Job.Application.Job;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.websocket.server.PathParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,15 @@ public class JobController {
     public String findAll(@RequestBody Job job){
         jobService.createJob(job);
         return "Job Added";
+    }
+    @GetMapping("/jobs/{id}")
+    public Job findJobById(@PathVariable long id){
+        Job job = jobService.getJobById(id);
+        if(job!=null){
+            return job;
+        }
+        return new Job(1L,"Dummy title","Dummy Description",
+                "20000","30000","Dummy Location");
+
     }
 }
