@@ -1,6 +1,9 @@
 package com.example.Job.Application.Job;
 
 import jakarta.websocket.server.PathParam;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,23 +18,22 @@ public class JobController {
     }
 
     @GetMapping("/jobs")
-    public List<Job> findAll(){
-        return jobService.findAll();
+    public ResponseEntity<List<Job>> findAll(){
+        return ResponseEntity.ok(jobService.findAll());
     }
 
     @PostMapping("/jobs")
-    public String findAll(@RequestBody Job job){
+    public ResponseEntity<String> findAll(@RequestBody Job job){
         jobService.createJob(job);
-        return "Job Added";
+        return new ResponseEntity<>("Job Added", HttpStatus.CREATED);
     }
     @GetMapping("/jobs/{id}")
-    public Job findJobById(@PathVariable long id){
+    public ResponseEntity<Job> findJobById(@PathVariable long id){
         Job job = jobService.getJobById(id);
         if(job!=null){
-            return job;
+            return new ResponseEntity<>(job, HttpStatus.OK);
         }
-        return new Job(1L,"Dummy title","Dummy Description",
-                "20000","30000","Dummy Location");
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 }
