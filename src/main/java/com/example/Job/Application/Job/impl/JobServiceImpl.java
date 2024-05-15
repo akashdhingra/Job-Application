@@ -14,8 +14,6 @@ import java.util.Optional;
 public class JobServiceImpl implements JobService {
 
     JobRepository jobRepository;
-//    private List<Job> jobs = new ArrayList<>();
-    private Long id = 1L;
 
     public JobServiceImpl(JobRepository jobRepository) {
         this.jobRepository = jobRepository;
@@ -28,7 +26,6 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void createJob(Job job) {
-        job.setId(id++);
         jobRepository.save(job);
     }
 
@@ -57,6 +54,7 @@ public class JobServiceImpl implements JobService {
             job.setMaxSalary(updatedJob.getMaxSalary());
             job.setMinSalary(updatedJob.getMinSalary());
             job.setLocation(updatedJob.getLocation());
+            jobRepository.save(job);
             return true;
         }
         return false;
